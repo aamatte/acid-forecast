@@ -3,7 +3,7 @@
   <div class="col-md-2">
     <%= image_tag "weather/#{day_forecast['Day']['Icon']}.png" %>
     <p>
-      <%= day_forecast['Date']%>
+      <%= Date.parse(day_forecast['Date']).to_time.to_formatted_s(:week_day) %>
     </p>
     <p>
       Minimum: <%= day_forecast['Temperature']['Minimum']['Value']%> F
