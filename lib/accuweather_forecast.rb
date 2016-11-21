@@ -29,11 +29,13 @@ module AccuweatherForecast
 
   def request_forecast(city)
     # Get city location key
-    url = SEARCH_URL % { city: city, api_key: '7ZosCieAvQ5DQDifozMAD42pc2F3Aq96' } # TODO: change to ENV
+    url = SEARCH_URL % { city: city,
+                         api_key: ENV['ACID_FORECAST_ACCUWEATHER_KEY'] }
     location_key = HTTParty.get(url).parsed_response[0]['Key']
 
     # Get 5 days forecast
-    url = FORECAST_URL % { location_key: location_key, api_key: '7ZosCieAvQ5DQDifozMAD42pc2F3Aq96' }
+    url = FORECAST_URL % { location_key: location_key,
+                           api_key: ENV['ACID_FORECAST_ACCUWEATHER_KEY'] }
 
     HTTParty.get(url).parsed_response
   end
