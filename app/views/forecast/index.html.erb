@@ -1,1 +1,8 @@
-<h1> Acid Forecast </h1>
+<div class="container">
+  <h1> Acid Forecast </h1>
+  <% @response.each do |city, forecast| %>
+    <div class="row">
+      <%= render 'city_forecast', city: city, forecast: forecast %>
+    </div>
+  <% end %>
+</div>

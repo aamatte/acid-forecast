@@ -1,0 +1,15 @@
+<h2> Forecast for <%= city %> </h2>
+  <% forecast['DailyForecasts'].each do |day_forecast| %>
+  <div class="col-md-2">
+    <%= image_tag "weather/#{day_forecast['Day']['Icon']}.png" %>
+    <p>
+      <%= day_forecast['Date']%>
+    </p>
+    <p>
+      Minimum: <%= day_forecast['Temperature']['Minimum']['Value']%> F
+    </p>
+    <p>
+      Maximum: <%= day_forecast['Temperature']['Maximum']['Value']%> F
+    </p>
+  </div>
+  <% end %>
