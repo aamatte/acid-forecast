@@ -4,10 +4,10 @@ module AccuweatherForecast
   DEFAULT_CITIES = ['Paris', 'Bangkok', 'Santiago', 'New York', 'Bamako'].freeze
 
   FORECAST_URL = 'http://dataservice.accuweather.com/forecasts/v1/daily/5day/'\
-                  '%{location_key}?apikey=%{api_key}'.freeze
+                  '%{location_key}?apikey=%{api_key}&metric=true'.freeze
 
   SEARCH_URL = 'http://dataservice.accuweather.com/locations/v1/search'\
-               '?q=%{city}&apikey=%{api_key}'.freeze
+               '?q=%{city}&apikey=%{api_key}&metric=true'.freeze
 
   # Return 5 days forecast for a city.
   def forecast(city)
