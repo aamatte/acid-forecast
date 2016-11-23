@@ -12,6 +12,38 @@
 </head>
 <body>
 
+  <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Acid forecast</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="/?city=Paris">Paris</a></li>
+        <li><a href="/?city=Bangkok">Bangkok</a></li>
+        <li><a href="/?city=Santiago">Santiago</a></li>
+        <li><a href="/?city=New-York">New York</a></li>
+        <li><a href="/?city=Bamako">Bamako</a></li>
+      </ul>
+      <%= form_tag forecast_path, method: 'get', class: "navbar-form navbar-left" do %>
+        <div class="form-group">
+          <%= text_field_tag :city, '', placeholder: 'City', class: "form-control" %>
+        </div>
+        <%= submit_tag 'Search', name: nil, class: "btn btn-default" %>
+      <% end %>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
 <%= yield %>
 
 </body>

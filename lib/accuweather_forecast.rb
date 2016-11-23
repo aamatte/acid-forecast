@@ -16,7 +16,7 @@ module AccuweatherForecast
   # Return 5 days forecast for a city.
   def forecast(city)
     result = {}
-    result[city] = request_forecast(city)
+    result[city] = request_forecast(city.downcase)
     result
   end
 
@@ -24,7 +24,7 @@ module AccuweatherForecast
   def forecast_default
     cities_forecast = {}
     DEFAULT_CITIES.each do |city|
-      cities_forecast[city] = request_forecast(city)
+      cities_forecast[city] = request_forecast(city.downcase)
     end
     cities_forecast
   end
@@ -32,25 +32,31 @@ module AccuweatherForecast
   private
 
   def request_forecast(city)
-    search_url = SEARCH_URL % { city: city,
-                                api_key: ENV['ACID_FORECAST_ACCUWEATHER_KEY'] }
-    response = Redis.current.get(search_url)
+    response = Redis.current.get(city)
     if response.nil?
-      # Get city location key
-      location_key = HTTParty.get(search_url).parsed_response[0]['Key']
-
-      # Get 5 days forecast
-      url = FORECAST_URL % { location_key: location_key,
-                             api_key: ENV['ACID_FORECAST_ACCUWEATHER_KEY'] }
-      response = HTTParty.get(url).parsed_response.to_json
-
-      cache_response(search_url, response)
+      location_key = location_key(city)
+      unless location_key.nil?
+        # Get 5 days forecast
+        url = FORECAST_URL % { location_key: location_key,
+                               api_key: ENV['ACID_FORECAST_ACCUWEATHER_KEY'] }
+        response = HTTParty.get(url).parsed_response.to_json
+        cache_response(city, response)
+      end
     end
+    response ||= '{}'
     JSON.parse(response)
   end
 
   def cache_response(key, response)
     Redis.current.set(key, response)
     Redis.current.expire(key, CACHE_EXPIRE_TIME)
+  end
+
+  # Get city location key
+  def location_key(city)
+    search_url = SEARCH_URL % { city: city,
+                                api_key: ENV['ACID_FORECAST_ACCUWEATHER_KEY'] }
+    response = HTTParty.get(search_url).parsed_response
+    !response.empty? ? response[0]['Key'] : nil
   end
 end

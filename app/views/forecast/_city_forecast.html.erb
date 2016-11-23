@@ -1,15 +1,31 @@
-<h2> Forecast for <%= city.gsub('-', ' ').split(' ').map(&:capitalize).join(' ') %> </h2>
-  <% forecast['DailyForecasts'].each do |day_forecast| %>
-  <div class="col-md-2">
-    <%= image_tag "weather/#{day_forecast['Day']['Icon']}.png" %>
-    <p>
-      <%= Date.parse(day_forecast['Date']).to_time.to_formatted_s(:week_day) %>
-    </p>
-    <p>
-      Minimum: <%= day_forecast['Temperature']['Minimum']['Value']%> C
-    </p>
-    <p>
-      Maximum: <%= day_forecast['Temperature']['Maximum']['Value']%> C
-    </p>
+<% if forecast.empty? %>
+  <h2> Ups, we couldn't find that city </h2>
+<% else %>
+
+  <div class="panel panel-default">
+
+    <div class="panel-heading">
+      <h3 class="panel-title">
+        <%= city.gsub('-', ' ').split(' ').map(&:capitalize).join(' ') %>
+      </h3>
+    </div>
+
+    <div class="panel-body">
+        <% forecast['DailyForecasts'].each do |day_forecast| %>
+          <div class="col-md-2">
+            <%= image_tag "weather/#{day_forecast['Day']['Icon']}.png" %>
+            <p>
+              <%= Date.parse(day_forecast['Date']).to_time.to_formatted_s(:week_day) %>
+            </p>
+            <p>
+              Minimum: <%= day_forecast['Temperature']['Minimum']['Value']%> C
+            </p>
+            <p>
+              Maximum: <%= day_forecast['Temperature']['Maximum']['Value']%> C
+            </p>
+          </div>
+      <% end %>
+    </div>
+
   </div>
-  <% end %>
+<% end %>
