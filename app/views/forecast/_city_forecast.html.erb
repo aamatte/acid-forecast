@@ -13,16 +13,25 @@
     <div class="panel-body">
         <% forecast['DailyForecasts'].each do |day_forecast| %>
           <div class="col-md-2">
+            <div>
+              <span class="week-day"><%= Date.parse(day_forecast['Date']).to_time.to_formatted_s(:week_day) %></span>
+              <span class="month-day"><%= Date.parse(day_forecast['Date']).to_time.to_formatted_s(:day_month) %></span>
+            </div>
+            <hr />
             <%= image_tag "weather/#{day_forecast['Day']['Icon']}.png" %>
             <p>
-              <%= Date.parse(day_forecast['Date']).to_time.to_formatted_s(:week_day) %>
+              <span class="max-temperature">
+                <%= day_forecast['Temperature']['Maximum']['Value']%> °
+              </span>
+              /
+              <span class="min-temperature">
+                <%= day_forecast['Temperature']['Minimum']['Value']%> °
+              </span>
             </p>
             <p>
-              Minimum: <%= day_forecast['Temperature']['Minimum']['Value']%> C
+              <%= day_forecast['Day']['IconPhrase'] %>
             </p>
-            <p>
-              Maximum: <%= day_forecast['Temperature']['Maximum']['Value']%> C
-            </p>
+            <br />
           </div>
       <% end %>
     </div>

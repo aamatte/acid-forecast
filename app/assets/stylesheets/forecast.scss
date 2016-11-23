@@ -1,3 +1,23 @@
 // Place all the styles related to the forecast controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.week-day {
+  font-size: 2.5vh;
+  display: block;
+}
+
+.month-day {
+  font-size: 2vh;
+  display: block;
+  color: gray;
+}
+
+.max-temperature {
+  font-size: 3.5vh;
+}
+
+.min-temperature {
+  font-size: 2.5vh;
+  color: gray;
+}
