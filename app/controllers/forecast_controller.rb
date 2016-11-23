@@ -1,9 +1,7 @@
 class ForecastController < ApplicationController
-  include AccuweatherForecast
-
   def index
     @city = city_params[:city]
-    @response = @city ? forecast(@city) : forecast_default
+    @response = @city ? AccuweatherForecast.forecast(@city) : AccuweatherForecast.forecast_default
   end
 
   private
