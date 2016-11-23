@@ -43,7 +43,7 @@ module AccuweatherForecast
       url = FORECAST_URL % { location_key: location_key,
                              api_key: ENV['ACID_FORECAST_ACCUWEATHER_KEY'] }
       response = HTTParty.get(url).parsed_response.to_json
-      
+
       cache_response(search_url, response)
     end
     JSON.parse(response)

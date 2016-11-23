@@ -5,4 +5,10 @@ class ForecastController < ApplicationController
     @city = params[:city]
     @response = @city ? forecast(@city) : forecast_default
   end
+
+  private
+
+  def city_params
+    params.permit(:city)
+  end
 end
