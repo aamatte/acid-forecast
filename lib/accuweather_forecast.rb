@@ -1,7 +1,6 @@
 require 'rubygems'
-require 'singleton'
 
-# Accuweather Forecast API wrapper
+# Accuweather Forecast API wrapper with cache
 class AccuweatherForecast
   # When no city is provided, these cities forecasts are shown.
   DEFAULT_CITIES = ['Paris', 'Bangkok', 'Santiago', 'New York', 'Bamako'].freeze
@@ -43,29 +42,33 @@ class AccuweatherForecast
   end
 
   def request_forecast(city)
-    response = Redis.current.get(city)
-    if response.nil?
+    response = cached_response(city) || {}
+    if response.empty?
       location_key = location_key(city)
       unless location_key.nil?
         # Get 5 days forecast
         url = FORECAST_URL % { location_key: location_key, api_key: @api_key }
-        response = HTTParty.get(url).parsed_response.to_json
+        response = HTTParty.get(url).parsed_response
         cache_response(city, response)
       end
     end
-    response ||= '{}'
-    JSON.parse(response)
+    response
   end
 
   def cache_response(key, response)
-    Redis.current.set(key, response)
+    Redis.current.set(key, response.to_json)
     Redis.current.expire(key, CACHE_EXPIRE_TIME)
+  end
+
+  def cached_response(key)
+    cached = Redis.current.get(key)
+    cached ? JSON.parse(cached) : nil
   end
 
   # Get city location key
   def location_key(city)
     search_url = SEARCH_URL % { city: city, api_key: @api_key }
     response = HTTParty.get(search_url).parsed_response
-    !response.empty? ? response[0]['Key'] : nil
+    response.any? ? response[0]['Key'] : nil
   end
 end
