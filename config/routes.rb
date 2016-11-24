@@ -1,11 +1,14 @@
 Rails.application.routes.draw do
   # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
+  # See how all your routes lay out with 'rake routes'.
 
-  # You can have the root of your site routed with "root"
+  # You can have the root of your site routed with 'root'
   root 'forecast#index'
   get 'forecast', to: 'forecast#index'
-  get '*path', to: 'forecast#index' # TODO: redirect to 404 page
+
+  %w(404 500).each do |code|
+    get code, to: 'errors#show', code: code
+  end
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
